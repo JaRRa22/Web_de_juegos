@@ -1,0 +1,74 @@
+package com.springboot.webdejuegos.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+@Configuration
+@EnableWebSecurity
+public class SpringSecurity {
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Bean
+    public static PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests((authorize) ->
+                        authorize.requestMatchers("/register/**").permitAll()
+                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/home").permitAll()
+                                .requestMatchers("/games").authenticated()
+                                .requestMatchers("/games/encontrados").authenticated()
+                                .requestMatchers("/game/**").authenticated()
+                                .requestMatchers("/users").authenticated()
+                                .requestMatchers("/users/encontrados").authenticated()
+                                .requestMatchers("/user/**").authenticated()
+                                .requestMatchers("/crud").hasRole("ADMIN")
+                                .requestMatchers("/crud/update/**").authenticated()
+                                .requestMatchers("crud/modificar").authenticated()
+                                .requestMatchers("/crud/delete/**").hasRole("ADMIN")
+                                .requestMatchers("/add").hasRole("ADMIN")
+                                .requestMatchers("/display").authenticated()
+                                .requestMatchers("/ping").hasRole("ADMIN")
+                                .requestMatchers("/images").hasRole("ADMIN")
+                                .requestMatchers("/games/crud").hasRole("ADMIN")
+                                .requestMatchers("/games/crud/save").hasRole("ADMIN")
+                                .requestMatchers("/games/crud/delete/**").hasRole("ADMIN")
+                                .requestMatchers("/games/crud/update/**").hasRole("ADMIN")
+                                .requestMatchers("/games/crud/modificar").hasRole("ADMIN")
+                                .requestMatchers("/games/crud/add").hasRole("ADMIN")
+                                .requestMatchers("/guardarresultado/**").authenticated()
+                ).formLogin(
+                        form -> form
+                                .loginPage("/login")
+                                .loginProcessingUrl("/login")
+                                .defaultSuccessUrl("/games", true)
+                                .permitAll()
+                ).logout(
+                        logout -> logout
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .permitAll()
+                );
+        return http.build();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
+}

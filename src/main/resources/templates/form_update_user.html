@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update User</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <form th:action="@{/crud/modificar}" method="post" th:object="${user}"
+              enctype="multipart/form-data">
+
+            <input type="hidden" class="form-control" th:field="*{id}">
+
+            <div class="row">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name :</label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Enter name">
+                    <!--
+                    <p th:errors="*{name}" class="text-danger"
+                       th:if="${#fields.hasErrors('name')}">
+                    </p>
+                    -->
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email :</label>
+                    <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Enter email">
+                    <!--
+                    <p th:errors="*{email}" class="text-danger"
+                       th:if="${#fields.hasErrors('email')}">
+                    </p>
+                    -->
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña :</label>
+                    <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Enter password">
+                    <!--
+                    <p th:errors="*{password}" class="text-danger"
+                       th:if="${#fields.hasErrors('password')}">
+                    </p>
+                    -->
+                </div>
+                <div class="mb-3">
+                    <label for="nickname" class="form-label">Apodo :</label>
+                    <input type="text" class="form-control" id="nickname" th:field="*{nickname}" placeholder="Enter nickname">
+                    <!--
+                    <p th:errors="*{nickname}" class="text-danger"
+                       th:if="${#fields.hasErrors('nickname')}">
+                    </p>
+                    -->
+                </div>
+
+                <div class="mb-3">
+                    <label for="avatar" class="form-label">Avatar :</label>
+                    <input type="file" class="form-control" id="avatar" th:field="*{avatar}" placeholder="Enter avatar" alt="">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+        </form>
+    </div>
+
+</body>
+</html>

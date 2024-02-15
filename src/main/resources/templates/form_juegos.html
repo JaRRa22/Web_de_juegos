@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update/Create Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <form th:action="${game.id == null} ? @{/games/crud/save} : @{/games/crud/modificar}"
+          method="post" enctype="multipart/form-data" th:object="${game}">
+
+        <input type="hidden" class="form-control" th:field="*{id}">
+
+        <div class="row">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name :</label>
+                <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Enter game name">
+                <!--
+                <p th:errors="*{name}" class="text-danger"
+                   th:if="${#fields.hasErrors('name')}">
+                </p>
+                -->
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description :</label>
+                <input type="text" class="form-control" id="description" th:field="*{description}" placeholder="Enter description">
+                <!--
+                <p th:errors="*{email}" class="text-danger"
+                   th:if="${#fields.hasErrors('email')}">
+                </p>
+                -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="mb-3">
+                <label for="route" class="form-label">Route :</label>
+                <input type="text" class="form-control" id="route" th:field="*{route}" placeholder="Enter game route">
+                <!--
+                <p th:errors="*{nickname}" class="text-danger"
+                   th:if="${#fields.hasErrors('nickname')}">
+                </p>
+                -->
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Image :</label>
+                <input type="file" class="form-control" id="image" th:field="*{image}" placeholder="Enter image game" alt="">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+
+</body>
+</html>
